@@ -14,6 +14,7 @@ function get_model(order, lb, ub, filename)
 end
 
 # rrule for Chebyshev polynomial functor. TODO: support chebjacobian (or explicitly don't support it)
+# TODO: support x real 
 function rrule(c::ChebPoly, x::AbstractVector)
     project_x = ProjectTo(x)
     y, Δy = chebgradient(c, x)
