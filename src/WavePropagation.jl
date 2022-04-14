@@ -8,7 +8,7 @@ module WavePropagation
     import ChainRulesCore.rrule
 
     export planned_fft, planned_ifft
-    export convolve, convolveT
+    export convolve, convolveT, convolve!, convolveT!
     export incident_field, greens
     export get_model
 
