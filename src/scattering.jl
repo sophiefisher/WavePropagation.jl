@@ -1,16 +1,18 @@
-function make_model(f, ϵsub, ϵ, cellL, thickness, order, lb, ub, filename)
-    # TODO: call out to Python
-    pts = chebpoints(order, lb, ub)
-end
-
-function get_model(order, lb, ub, filename)
-    f = open(filename)
-    function val(line)
-        dat = split(line)
-        parse(Float64, dat[1]) + parse(Float64, dat[2]) * im
-    end
-    vals = [val(line) for line in eachline(f)]
-    chebinterp(vals, lb, ub)
+function get_model(materialsub, materialg, lbwidth, lbfreq, ubwidth, ubfreq, orderwidth, orderfreq, surdata_dir)
+    filename = @sprintf("%s/%s %s lb %.6f %.6f ub %.6f %.6f order %d %d", surdata_dir, materialsub, materialg, lbwidth, lbfreq, ubwidth, ubfreq, orderwidth, orderfreq)
+    f = open(filename,"r")
+    mat = readdlm(filename, Float64)
+    close(f)
+    datareal = transpose(reshape(mat[:,5], (orderfreq+1, orderwidth+1)) )
+    dataimag = transpose(reshape(mat[:,6], (orderfreq+1, orderwidth+1)) )
+    
+    modelreal = chebinterp(datareal, [lbwidth, lbfreq], [ubwidth, ubfreq])
+    modelimag = chebinterp(dataimag, [lbwidth, lbfreq], [ubwidth, ubfreq])
+    
+    surmodel(width, freq) = modelreal([width, freq]) + (im * modelimag([width, freq]) )
+    
+    surmodel 
+    
 end
 
 # rrule for Chebyshev polynomial functor. TODO: support chebjacobian (or explicitly don't support it)

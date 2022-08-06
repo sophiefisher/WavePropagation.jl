@@ -6,6 +6,8 @@ module WavePropagation
     using Memoize
     using ChainRulesCore: ProjectTo, NoTangent
     import ChainRulesCore.rrule
+    using Printf
+    using DelimitedFiles
 
     export planned_fft, planned_ifft
     export convolve, convolveT, convolve!, convolveT!
