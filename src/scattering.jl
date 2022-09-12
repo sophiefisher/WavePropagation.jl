@@ -15,6 +15,7 @@ function get_models1D(model2D, orderfreqPSF)
     widths = chebpoints(size(model2D.coefs,1) - 1,model2D.lb[1], model2D.ub[1]);
     freqs = reverse(chebpoints(orderfreqPSF, model2D.lb[2], model2D.ub[2]))
     models1D = [chebinterp(map(w->model2D(@SVector[w,f]), widths), model2D.lb[1], model2D.ub[1]) for f in freqs]
+    (;models1D, freqs)
 end
 
 # rrule for Chebyshev polynomial functor. TODO: support chebjacobian (or explicitly don't support it)
