@@ -6,14 +6,15 @@ of size kerL x kerL to produce an output of size (kerL - inpL) x (kerL - inpL).
 
 TODO: maybe this should return a real array
 """
-function convolve(inp, kernel)
+function convolve(inp, kernel, plan)
+    #plan must be for the size of the kernel
     inpL = size(inp)[1]
     kerL = size(kernel)[1]
     outL = kerL - inpL
 
     arr_pad = [inp zeros(inpL, outL); zeros(outL, inpL) zeros(outL, outL)]
     #out_pad = P \ ((P * arr_pad) .* kernel)
-    out_pad = planned_ifft(planned_fft(arr_pad) .* kernel)
+    out_pad = plan \ (  (plan * arr_pad) .* kernel)
     out = out_pad[inpL+1:kerL, inpL+1:kerL]
 
     out
