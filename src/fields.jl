@@ -1,14 +1,14 @@
 function incident_field(D, f, n, gridL, cellL)
-    ω = 2π * f
+    ω = convert(typeof(f), 2) * π * f
     k = n * ω
 
     function efield(x, y)
         r = √(x^2 + y^2 + D^2)
-        ℯ ^ (k * r * im) / (4π * r)
+        ℯ ^ (k * r * im) / ( convert(typeof(f),4) * π * r)
     end
 
-    grid = range(-gridL/2 + 1/2, gridL/2 - 1/2, length = gridL) .* cellL
-    [efield(x, y) for x in grid, y in grid]
+    grid = range(-gridL/convert(typeof(f), 2) + convert(typeof(f), 0.5), gridL/convert(typeof(f), 2) - convert(typeof(f), 0.5), length = gridL) .* cellL
+    incident = [efield(x, y) for x in grid, y in grid]
 end
 
 """
@@ -26,17 +26,15 @@ the near to far transformation.
 - `cellL`: length of each cell of grid
 """
 function greens(D, f, ϵ, μ, gridL, cellL)
-    ω = 2π * f
+    ω = convert(typeof(f),2) * π * f
     n = √(ϵ*μ)
     k = n * ω
 
     function efield(x, y)
         r = √(x^2 + y^2 + D^2)
-        D * (-1 + k * r * im) * ℯ ^ (k * r * im) / (4 * π * r^3)
+        D * (convert(typeof(f),-1) + k * r * im) * ℯ ^ (k * r * im) / (convert(typeof(f),4) * π * r^3)
     end
 
-    gridout = range(-gridL, gridL - 1, length = gridL * 2) .* cellL
-    g = [efield(x, y) * -μ / ϵ for x in gridout, y in gridout]
-
-    g
+    gridout = range(-gridL, gridL - convert(typeof(f),1), length = gridL * convert(typeof(gridL),2) ) .* cellL
+    [efield(x, y) * -μ / ϵ for x in gridout, y in gridout]
 end

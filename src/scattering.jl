@@ -23,11 +23,12 @@ end
 function get_models1D(materialsub, materialg, in_air, lbfreq, ubfreq, orderfreq, lbwidth, ubwidth, orderwidth, surdata_dir)
     filename = @sprintf("%s/%s_%s_%s_freq_%.3f_%.3f_%d_width_%.3f_%.3f_%d",surdata_dir, materialsub, materialg, in_air, lbfreq, ubfreq, orderfreq, lbwidth, ubwidth, orderwidth)
     f = open(filename,"r")
-    mat = readdlm(filename, ',',Float64)
+    mat = readdlm(filename, ',',typeof(lbfreq))
     close(f)
+    freqs = reverse(chebpoints(orderfreq, lbfreq, ubfreq))
+    
     data = reshape( complex.(mat[:,1], mat[:,2]), (orderwidth+1,orderfreq+1) )
     models1D = [chebinterp(data[:,i], lbwidth, ubwidth) for i in 1:orderfreq+1]
-    freqs = reverse(chebpoints(orderfreq, lbfreq, ubfreq))
     (;models1D, freqs)
 end
     

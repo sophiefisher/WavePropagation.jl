@@ -20,6 +20,20 @@ function convolve(inp, kernel, plan)
     out
 end
 
+function convolveT(out, kernel, plan)
+    outL = size(out)[1]
+    kerL = size(kernel)[1]
+    inpL = kerL - outL
+
+    out_pad = [zeros(inpL, inpL) zeros(inpL, outL); zeros(outL, inpL) out]
+    #arr_pad = P * ((P \ out_pad) .* kernel)
+    arr_pad = plan * ((plan \ out_pad) .* kernel )
+    arr = arr_pad[1:inpL, 1:inpL]
+
+    arr
+end
+
+#=
 function convolveT(out, kernel)
     outL = size(out)[1]
     kerL = size(kernel)[1]
@@ -64,5 +78,5 @@ function convolveT!(out, kernel, padded)
     inp
 end
     
-
+=#
           
