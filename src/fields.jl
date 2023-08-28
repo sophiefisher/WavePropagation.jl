@@ -25,7 +25,7 @@ the near to far transformation.
 - `gridL`: side length of E-field grid (in cells)
 - `cellL`: length of each cell of grid
 """
-function greens(D, f, ϵ, μ, gridL, cellL)
+function greens(D, f, ϵ, μ, n2f_size, cellL)
     ω = convert(typeof(f),2) * π * f
     n = √(ϵ*μ)
     k = n * ω
@@ -35,6 +35,6 @@ function greens(D, f, ϵ, μ, gridL, cellL)
         D * (convert(typeof(f),-1) + k * r * im) * ℯ ^ (k * r * im) / (convert(typeof(f),4) * π * r^3)
     end
 
-    gridout = range(-gridL, gridL - convert(typeof(f),1), length = gridL * convert(typeof(gridL),2) ) .* cellL
+    gridout = range(-(n2f_size ÷ 2), (n2f_size ÷ 2) - 1, length = n2f_size  ) .* cellL
     [efield(x, y) * -μ / ϵ for x in gridout, y in gridout]
 end

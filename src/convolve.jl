@@ -8,6 +8,7 @@ TODO: maybe this should return a real array
 """
 function convolve(inp, kernel, plan)
     #plan must be for the size of the kernel
+    #assumes that input is smaller than kernel
     inpL = size(inp)[1]
     kerL = size(kernel)[1]
     outL = kerL - inpL
