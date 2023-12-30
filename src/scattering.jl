@@ -20,8 +20,9 @@ function get_models1D(model2D, orderfreqPSF)
 end
 =#
 
-function get_models1D(materialsub, materialg, in_air, lbfreq, ubfreq, orderfreq, lbwidth, ubwidth, orderwidth, surdata_dir)
-    filename = @sprintf("%s/%s_%s_%s_freq_%.3f_%.3f_%d_width_%.3f_%.3f_%d",surdata_dir, materialsub, materialg, in_air, lbfreq, ubfreq, orderfreq, lbwidth, ubwidth, orderwidth)
+function get_models1D(materialsub, materialg, in_air, lbfreq, ubfreq, orderfreq, lbwidth, ubwidth, orderwidth, period, height, substrate_thickness, nG, surdata_dir)
+    filename = @sprintf("%s/%.3f_%.3f_%d_%.3f_%.3f_%d_%.3f_%.3f_%.3f_%s_%s_%s_%d",surdata_dir, lbfreq, ubfreq, orderfreq, lbwidth, ubwidth, orderwidth, period, height, substrate_thickness, in_air,materialsub, materialg, nG)
+
     f = open(filename,"r")
     mat = readdlm(filename, ',',typeof(lbfreq))
     close(f)
